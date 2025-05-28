@@ -1,4 +1,4 @@
-package com.example.novels;
+package com.example.novels.repository;
 
 import java.util.Arrays;
 import java.util.stream.IntStream;

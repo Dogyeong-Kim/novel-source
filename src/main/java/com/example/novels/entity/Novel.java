@@ -1,6 +1,6 @@
 package com.example.novels.entity;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -35,7 +35,7 @@ public class Novel {
     @Column(nullable = false)
     private String author;
 
-    private LocalDateTime publishedDate; // 출판일
+    private LocalDate publishedDate; // 출판일
 
     @Column(nullable = false)
     private boolean available;
