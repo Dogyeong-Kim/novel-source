@@ -24,6 +24,9 @@ public class PageRequestDTO {
     private int size = 10;
 
     // 검색
-    private String type;
-    private String keyword;
+    @Builder.Default
+    private Long genre = 0L;
+
+    @Builder.Default
+    private String keyword = "";
 }

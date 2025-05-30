@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 
+import com.example.novels.dto.PageRequestDTO;
 import com.example.novels.entity.Novel;
 import com.example.novels.entity.QGenre;
 import com.example.novels.entity.QGrade;
@@ -48,7 +49,7 @@ public class SearchNovelRepositoryImpl extends QuerydslRepositorySupport impleme
     }
 
     @Override
-    public Page<Object[]> list(Pageable pageable) {
+    public Page<Object[]> list(Long gid, String keyword, Pageable pageable) {
         QNovel novel = QNovel.novel;
         QGenre genre = QGenre.genre;
         QGrade grade = QGrade.grade;
@@ -66,8 +67,19 @@ public class SearchNovelRepositoryImpl extends QuerydslRepositorySupport impleme
         BooleanExpression expression = novel.id.gt(0);
         builder.and(expression);
 
+        // where n1_0.novel_id>? and genre_id = 3 and title like '' or author like ''
         // 검색
+        BooleanBuilder conditionBuilder = new BooleanBuilder();
+        if (gid != 0) {
+            builder.and(genre.id.eq(gid));
+        }
 
+        if (!keyword.isEmpty()) {
+            conditionBuilder.and(novel.title.contains(keyword));
+            conditionBuilder.or(novel.author.contains(keyword));
+        }
+
+        builder.and(conditionBuilder);
         tuple.where(builder);
         // Sort 생성
         Sort sort = pageable.getSort();
